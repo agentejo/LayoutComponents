@@ -39,19 +39,29 @@
 
     </div>
 
-    <div class="uk-grid uk-grid-small uk-grid-match uk-grid-width-medium-1-4 uk-animation-fade" if="{App.Utils.count(components) && !component}">
+    <div class="" if="{App.Utils.count(components) && !component}">
 
-        <div class="uk-grid-margin" each="{ comp in components}" show="{ infilter(comp.name, comp.meta) }">
-            <div class="uk-panel uk-panel-box uk-panel-card uk-flex uk-flex-middle">
-                <div class="uk-margin-small-right">
-                    <img src="@url('assets:app/media/icons/component.svg')" width="20" height="20" alt="Layout Component" />
+        <div class="uk-tab uk-margin uk-flex uk-flex-center uk-noselect" if="{groups.length}">
+            <li class="{!group && 'uk-active'}"><a onclick="{selectGroup}">@lang('All')</a></li>
+            <li class="{g==group && 'uk-active'}" each="{g in groups}"><a onclick="{parent.selectGroup}">{g}</a></li>
+        </div>
+
+
+        <div class="uk-grid uk-grid-small2 uk-grid-match uk-grid-width-medium-1-4 uk-animation-fade">
+
+            <div class="uk-grid-margin" each="{ comp in components}" show="{ infilter(comp.name, comp.meta) }">
+                <div class="uk-panel uk-panel-box uk-panel-card uk-flex uk-flex-middle">
+                    <div class="uk-margin-small-right">
+                        <img src="@url('assets:app/media/icons/component.svg')" width="20" height="20" alt="Layout Component" />
+                    </div>
+                    <div class="uk-flex-item-1 uk-margin-small-right">
+                        <a class="uk-link-muted" onclick="{parent.editComponent}">{ comp.meta.label || comp.name}</a>
+                    </div>
+                    <span class="uk-badge uk-margin-small-right" show="{comp.meta.group}">{comp.meta.group}</span>
+                    <a onclick="{parent.removeComponent}"><i class="uk-icon-trash-o uk-text-danger"></i></a>
                 </div>
-                <div class="uk-flex-item-1 uk-margin-small-right">
-                    <a class="uk-link-muted" onclick="{parent.editComponent}">{ comp.meta.label || comp.name}</a>
-                </div>
-                <span class="uk-badge uk-margin-small-right" show="{comp.meta.group}">{comp.meta.group}</span>
-                <a onclick="{parent.removeComponent}"><i class="uk-icon-trash-o uk-text-danger"></i></a>
             </div>
+
         </div>
 
     </div>
@@ -106,6 +116,8 @@
 
         this.$components = {{ json_encode($components) }};
         this.components = [];
+        this.groups = [];
+        this.group = null;
         this.component = null;
 
         this.on('mount', function() {
@@ -162,11 +174,19 @@
             this.component = null;
         }
 
+        selectGroup(e) {
+            this.group = e.item && e.item.g
+        }
+
         updatefilter(e) {
 
         }
 
         infilter(name, meta, value, label) {
+
+            if (this.group && meta.group !== this.group) {
+                return false;
+            }
 
             if (!this.refs.txtfilter.value) {
                 return true;
@@ -210,14 +230,23 @@
 
         getComponents() {
 
+            this.groups = [];
             this.components = [];
 
             Object.keys(this.$components).sort().forEach(function(name){
+
+                if ($this.$components[name].group) {
+                    $this.groups.push($this.$components[name].group);
+                }
+
                 $this.components.push({
                     name: name,
                     meta: $this.$components[name]
                 });
-            })
+            });
+
+            this.groups = _.uniq(this.groups);
+
         }
 
 
