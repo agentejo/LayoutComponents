@@ -52,7 +52,7 @@
             <div class="uk-grid-margin" each="{ comp in components}" show="{ infilter(comp.name, comp.meta) }">
                 <div class="uk-panel uk-panel-box uk-panel-card uk-flex uk-flex-middle">
                     <div class="uk-margin-small-right">
-                        <img src="@url('assets:app/media/icons/component.svg')" width="20" height="20" alt="Layout Component" />
+                        <img riot-src="{App.base('/assets/app/media/icons/' + (comp.meta.icon || 'component.svg'))}" width="20" height="20" alt="Layout Component" />
                     </div>
                     <div class="uk-flex-item-1 uk-margin-small-right">
                         <a class="uk-link-muted" onclick="{parent.editComponent}">{ comp.meta.label || comp.name}</a>
@@ -72,14 +72,36 @@
         <form class="uk-form" onsubmit="{ save }">
 
             <h2 class="uk-text-bold uk-flex uk-flex-middle">
-                <img class="uk-margin-small-right" src="@url('assets:app/media/icons/component.svg')" width="25" height="25" alt="Layout Component" />
+                <img class="uk-margin-small-right" riot-src="{App.base('/assets/app/media/icons/' + (component.meta.icon || 'component.svg') )}" width="25" height="25" alt="Layout Component" />
                 <span show="{component.mode=='add'}">@lang('Add Component')</span>
                 <span show="{component.mode=='edit'}">@lang('Edit Component')</span>
             </h2>
 
             <div class="uk-margin">
-
                 <input class="uk-flex-item-1 uk-form-large uk-form-blank uk-text-primary" type="text" bind="component.name" pattern="[a-zA-Z0-9_]+" required placeholder="@lang('Component name')">
+            </div>
+
+            <div class="uk-grid uk-grid-width-medium-1-2">
+                <div>
+                    <label class="uk-text-small uk-text-bold">@lang('Icon')</label>
+                    <div data-uk-dropdown="pos:'right-center', mode:'click'">
+                        <a>
+                            <img class="uk-display-block uk-margin uk-container-center" riot-src="{App.base('/assets/app/media/icons/' + (component.meta.icon || 'component.svg'))}" alt="icon" width="30" />
+                        </a>
+                        <div class="uk-dropdown uk-dropdown-scrollable uk-dropdown-width-2">
+                            <div class="uk-grid uk-grid-gutter">
+                                <div>
+                                    <a class="uk-dropdown-close" onclick="{ selectIcon }" icon=""><img src="@url('collections:icon.svg')" width="30" icon=""></a>
+                                </div>
+                                @foreach($app->helper("fs")->ls('*.svg', 'assets:app/media/icons') as $icon)
+                                <div>
+                                    <a class="uk-dropdown-close" onclick="{ selectIcon }" icon="{{ $icon->getFilename() }}"><img src="@url($icon->getRealPath())" width="30" icon="{{ $icon->getFilename() }}"></a>
+                                </div>
+                                @endforeach
+                            </div>
+                       </div>
+                    </div>
+                </div>
             </div>
 
             <div class="uk-grid uk-grid-width-medium-1-2">
@@ -196,6 +218,10 @@
             value = this.refs.txtfilter.value.toLowerCase();
 
             return [name.toLowerCase(), label.toLowerCase()].join(' ').indexOf(value) !== -1;
+        }
+
+        selectIcon(e) {
+            this.component.meta.icon = e.target.getAttribute('icon');
         }
 
         save(e) {
