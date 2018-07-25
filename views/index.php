@@ -52,7 +52,7 @@
             <div class="uk-grid-margin" each="{ comp in components}" show="{ infilter(comp.name, comp.meta) }">
                 <div class="uk-panel uk-panel-box uk-panel-card uk-flex uk-flex-middle">
                     <div class="uk-margin-small-right">
-                        <img riot-src="{App.base('/assets/app/media/icons/' + (comp.meta.icon || 'component.svg'))}" width="20" height="20" alt="Layout Component" />
+                        <img riot-src="{ '@url('assets:app/media/icons/')' + (comp.meta.icon || 'component.svg') }" width="20" height="20" alt="Layout Component" />
                     </div>
                     <div class="uk-flex-item-1 uk-margin-small-right">
                         <a class="uk-link-muted" onclick="{parent.editComponent}">{ comp.meta.label || comp.name}</a>
@@ -72,7 +72,7 @@
         <form class="uk-form" onsubmit="{ save }">
 
             <h2 class="uk-text-bold uk-flex uk-flex-middle">
-                <img class="uk-margin-small-right" riot-src="{App.base('/assets/app/media/icons/' + (component.meta.icon || 'component.svg') )}" width="25" height="25" alt="Layout Component" />
+                <img class="uk-margin-small-right" riot-src="{ '@url('assets:app/media/icons/')' + (component.meta.icon || 'component.svg') }" width="25" height="25" alt="Layout Component" />
                 <span show="{component.mode=='add'}">@lang('Add Component')</span>
                 <span show="{component.mode=='edit'}">@lang('Edit Component')</span>
             </h2>
@@ -86,7 +86,7 @@
                     <label class="uk-text-small uk-text-bold">@lang('Icon')</label>
                     <div data-uk-dropdown="pos:'right-center', mode:'click'">
                         <a>
-                            <img class="uk-display-block uk-margin uk-container-center" riot-src="{App.base('/assets/app/media/icons/' + (component.meta.icon || 'component.svg'))}" alt="icon" width="30" />
+                            <img class="uk-display-block uk-margin uk-container-center" riot-src="{ '@url('assets:app/media/icons/')' + (component.meta.icon || 'component.svg') }" alt="icon" width="30" />
                         </a>
                         <div class="uk-dropdown uk-dropdown-scrollable uk-dropdown-width-2">
                             <div class="uk-grid uk-grid-gutter">
