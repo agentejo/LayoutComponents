@@ -41,7 +41,7 @@
 
     <div class="" if="{App.Utils.count(components) && !component}">
 
-        <div class="uk-tab uk-margin uk-flex uk-flex-center uk-noselect" if="{groups.length}">
+        <div class="uk-tab uk-margin uk-flex uk-flex-center uk-noselect" if="{groups.length && !component}">
             <li class="{!group && 'uk-active'}"><a onclick="{selectGroup}">@lang('All')</a></li>
             <li class="{g==group && 'uk-active'}" each="{g in groups}"><a onclick="{parent.selectGroup}">{g}</a></li>
         </div>
@@ -104,20 +104,45 @@
                 </div>
             </div>
 
-            <div class="uk-grid uk-grid-width-medium-1-2">
-                <div>
-                    <label class="uk-text-small uk-text-bold">@lang('Label')</label>
-                    <input class="uk-width-1-1 uk-margin-small-top" type="text" bind="component.meta.label">
+            <div class="uk-panel-box uk-panel-card">
+
+                <div class="uk-margin">
+                    <input class="uk-flex-item-1 uk-form-large uk-form-blank uk-text-primary" type="text" bind="component.name" pattern="[a-zA-Z0-9_]+" required placeholder="@lang('Component name')">
                 </div>
 
-                <div>
-                    <label class="uk-text-small uk-text-bold">@lang('Group')</label>
-                    <input class="uk-width-1-1 uk-margin-small-top" type="text" bind="component.meta.group">
+                <div class="uk-grid uk-grid-width-medium-1-2">
+                    <div>
+                        <label class="uk-text-small uk-text-bold">@lang('Label')</label>
+                        <input class="uk-width-1-1 uk-margin-small-top" type="text" bind="component.meta.label">
+                    </div>
+
+                    <div>
+                        <label class="uk-text-small uk-text-bold">@lang('Group')</label>
+                        <input class="uk-width-1-1 uk-margin-small-top" type="text" bind="component.meta.group">
+                    </div>
+
                 </div>
+
+                <div class="uk-margin">
+                    <label class="uk-text-small uk-text-bold">@lang('Children')</label> <span class="uk-text-muted uk-text-small">@lang('e.g. Sections')</pan>
+                    <field-boolean class="uk-display-block uk-margin-small-top" bind="component.meta.children" label="{false}"></field-boolean>
+                </div>
+
+                <div class="uk-margin">
+                    <label class="uk-text-small uk-text-bold">@lang('Dialog width')</label>
+                    <div class="uk-form-select uk-display-block uk-margin-small-top">
+                        <a>{component.meta.dialog || 'normal'}</a>
+                        <select bind="component.meta.dialog">
+                            <option value="normal">Normal</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
 
-            <div class="uk-margin">
+            <div class="uk-margin-top">
                 <label class="uk-text-small uk-text-bold">@lang('Fields')</label>
                 <cp-fieldsmanager class="uk-display-block uk-margin-small-top" bind="component.meta.fields" localize="{false}"></cp-fieldsmanager>
             </div>
@@ -160,6 +185,8 @@
                 name: '',
                 meta: {
                     label: '',
+                    dialog: 'normal',
+                    children: false,
                     fields: []
                 }
             };
