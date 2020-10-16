@@ -52,7 +52,7 @@
             <div class="uk-grid-margin" each="{ comp in components}" show="{ infilter(comp.name, comp.meta) }">
                 <div class="uk-panel uk-panel-box uk-panel-card uk-flex uk-flex-middle">
                     <div class="uk-margin-small-right">
-                        <img src="@url('assets:app/media/icons/component.svg')" width="20" height="20" alt="Layout Component" />
+                        <img src="{ componentIcon(comp) }" width="20" height="20" alt="Layout Component" />
                     </div>
                     <div class="uk-flex-item-1 uk-margin-small-right">
                         <a class="uk-link-muted" onclick="{parent.editComponent}">{ comp.meta.label || comp.name}</a>
@@ -72,7 +72,7 @@
         <form class="uk-form" onsubmit="{ save }">
 
             <h2 class="uk-text-bold uk-flex uk-flex-middle">
-                <img class="uk-margin-small-right" src="@url('assets:app/media/icons/component.svg')" width="25" height="25" alt="Layout Component" />
+                <img class="uk-margin-small-right" src="{ componentIcon(component) }" width="25" height="25" alt="Layout Component" />
                 <span show="{component.mode=='add'}">@lang('Add Component')</span>
                 <span show="{component.mode=='edit'}">@lang('Edit Component')</span>
             </h2>
@@ -287,6 +287,9 @@
             return templates;
         }
 
+        componentIcon(component) {
+            return (component.meta.options && component.meta.options.icon) || App.base('/assets/app/media/icons/component.svg');
+        }
 
     </script>
 
