@@ -117,7 +117,7 @@
 
             <div class="uk-margin-top">
                 <label class="uk-text-small uk-text-bold">@lang('Fields')</label>
-                <cp-fieldsmanager class="uk-display-block uk-margin-small-top" bind="component.meta.fields" localize="{false}"></cp-fieldsmanager>
+                <cp-fieldsmanager class="uk-display-block uk-margin-small-top" bind="component.meta.fields" localize="{false}" templates="{ getTempates() }"></cp-fieldsmanager>
             </div>
 
             <div class="uk-margin-large-top">
@@ -269,6 +269,17 @@
 
             this.groups = _.uniq(this.groups);
 
+        }
+
+        getTempates() {
+
+            var templates = [];
+
+            Object.keys(this.$components).sort().forEach(function(name){
+                templates.push($this.$components[name]);
+            });
+
+            return templates;
         }
 
 
