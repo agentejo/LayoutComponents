@@ -97,7 +97,7 @@
                 </div>
 
                 <div class="uk-margin">
-                    <label class="uk-text-small uk-text-bold">@lang('Children')</label> <span class="uk-text-muted uk-text-small">@lang('e.g. Sections')</pan>
+                    <label class="uk-text-small uk-text-bold">@lang('Children')</label> <span class="uk-text-muted uk-text-small">@lang('e.g. Sections')</span>
                     <field-boolean class="uk-display-block uk-margin-small-top" bind="component.meta.children" label="{false}"></field-boolean>
                 </div>
 
@@ -118,6 +118,11 @@
             <div class="uk-margin-top">
                 <label class="uk-text-small uk-text-bold">@lang('Fields')</label>
                 <cp-fieldsmanager class="uk-display-block uk-margin-small-top" bind="component.meta.fields" localize="{false}" templates="{ getTempates() }"></cp-fieldsmanager>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-text-small uk-text-bold">@lang('Options JSON')</label>
+                <field-object cls="uk-width-1-1" bind="component.meta.options" rows="6" allowtabs="2"></field-object>
             </div>
 
             <div class="uk-margin-large-top">
